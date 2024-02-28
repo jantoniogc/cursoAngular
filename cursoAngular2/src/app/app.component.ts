@@ -1,4 +1,4 @@
-import { Component, Directive, HostListener } from '@angular/core';
+import { Component, Directive, HostListener, Signal, WritableSignal, computed, signal } from '@angular/core';
 
 @Directive({selector: 'button[counting]'})
 class CountClicks {
@@ -18,6 +18,10 @@ class CountClicks {
 export class AppComponent {
   name = 'undefined';
   array = [1, 2, 3, 4, 5]
+
+  count = signal(0);
+
+
   public fecha!: Date;
 
 
@@ -33,7 +37,7 @@ export class AppComponent {
 
   @HostListener('click', ["$event"]) 
   onMouseEnter(ev: Event) {
-    alert("You just hovered over a paragraph");
+    this.count.update(value => value + 1)
   }
 
   counter = 0;
