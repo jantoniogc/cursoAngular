@@ -12,9 +12,13 @@
 <button value="Pulsa" (click)="show($event)"> hazme click</button>
 
 @for (item of array; track $index) {
-  <app-calendar (fechaSelectEvent)="getFecha($event)"></app-calendar>
+  <app-calendar (fechaSelectEvent)="getFecha($event)" ></app-calendar>
 }
 
+<h1>Hello, you have pressed keys {{counter}} number of times!</h1> Press any key to
+increment the counter.
+<button (click)="resetCounter()">Reset Counter</button>
 
+<button counting>Increment</button>
 
 <H3>{{fecha | date:'dd/MM/YYYY HH:mm:ss' }}</H3>
