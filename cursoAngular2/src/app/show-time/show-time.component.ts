@@ -12,7 +12,7 @@ export class ShowTimeComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      console.log(`Full Name: ${this.time()}`);
+      console.log(`Hora: ${this.time()}`);
       this.hora = this.time();
     });
     setInterval(() => {
