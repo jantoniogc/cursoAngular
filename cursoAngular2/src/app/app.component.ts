@@ -1,14 +1,10 @@
-import { Component, Directive, HostListener, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Component, Directive, HostListener, Inject, InjectionToken, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { PruebaService } from './service/prueba.service';
+import { Customer } from './customer';
+import { GenericService } from './service/create.service';
 
-@Directive({selector: 'button[counting]'})
-class CountClicks {
-  numberOfClicks = 0;
-
-  @HostListener('click', ['$event.target'])
-  onClick(btn: any) {
-    console.log('button', btn, 'number of clicks:', this.numberOfClicks++);
- }
-}
+export const MyGenericServiceToken = new InjectionToken<GenericService<Customer>>(
+  'GenericService', { factory: () => new GenericService<Customer>(), providedIn: 'root' });
 
 @Component({
   selector: 'app-root',
@@ -25,6 +21,19 @@ export class AppComponent {
   public fecha!: Date;
 
 
+  constructor(
+    private bread: PruebaService,
+    @Inject('CreateService') private createService: GenericService<Customer>,
+    @Inject(MyGenericServiceToken) genericService: GenericService<Customer> ) {
+    const customer: Customer = {
+      id: 1,
+      name: 'preuba',
+      phone: '786758767'
+    };
+    this.createService.create(customer);
+    genericService.create({...customer, name:'pepito'});
+  }
+
   public show(e: Event) {
     e.stopPropagation();
     this.array.push(this.array.length + 1)
@@ -35,7 +44,7 @@ export class AppComponent {
     this.fecha = e
   }
 
-  @HostListener('click', ["$event"]) 
+  @HostListener('click', ["$event"])
   onMouseEnter(ev: Event) {
     this.count.update(value => value + 1)
   }
@@ -48,5 +57,11 @@ export class AppComponent {
   }
   resetCounter() {
     this.counter = 0;
+  }
+
+
+  getMensaje() {
+    const msg: String = this.bread.getMensaje("vamos a escribirlo");
+    console.log(msg);
   }
 }
